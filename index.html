@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adi Vaish | AI-Assisted Developer</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #03132c;
+            color: #8892b0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Particle Canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header Spacing Fix */
+        header {
+            margin: 1rem 0;
+        }
+
+        h1 {
+            color: #ccd6f6;
+            font-size: 4rem;
+            margin: 0.5rem 0;
+            text-shadow: 0 0 10px #64ffda;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            margin: 0.5rem 0 2rem 0;
+        }
+
+        /* 3D Profile Card */
+        .profile-card {
+            perspective: 1000px;
+            width: 250px;
+            height: 250px;
+            margin: 1rem auto;
+        }
+
+        .profile-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .profile-card:hover .profile-inner {
+            transform: rotateY(180deg);
+        }
+
+        .profile-front, .profile-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #64ffda;
+        }
+
+        .profile-back {
+            background: #112240;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #64ffda;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid #233554;
+        }
+
+        h2 {
+            color: #ccd6f6;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: #112240;
+            padding: 2rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px #64ffda;
+        }
+
+        .card h3 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Contact Button */
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin-top: 1rem;
+            border: 2px solid #64ffda;
+            color: #64ffda;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+        /* Project Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(10, 25, 47, 0.9);
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: #112240;
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid #64ffda;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 5px;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #64ffda;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .project-screenshots {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+        
+        .project-screenshots img {
+            height: 200px;
+            border: 1px solid #233554;
+            border-radius: 4px;
+        }
+        
+        /* Tech Tags */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .tech-tag {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        /* Project Button */
+        .project-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            background: transparent;
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .project-btn:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    
+    <div class="container">
+        <!-- Header Section -->
+        <header class="floating">
+            <div class="profile-card">
+                <div class="profile-inner">
+                    <div class="profile-front">
+                        <img src="profile.jpg" alt="Adi Vaish" class="profile-img">
+                    </div>
+                    <div class="profile-back">
+                        AI-Assisted Coder
+                    </div>
+                </div>
+            </div>
+            <h1 data-aos="fade-up">Adi Vaish</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Building the future with AI & Entrepreneurship</p>
+        </header>
+
+        <!-- About Section -->
+        <section id="about">
+            <h2 data-aos="fade-right">About Me</h2>
+            <div class="card-container">
+                <div class="card" data-aos="zoom-in">
+                    <p>Hey there! I'm Adi Vaish, a passionate tech enthusiast, AI-assisted coder, and aspiring entrepreneur. I love building innovative projects that solve real-world problems, and I leverage AI tools to accelerate development.<br>Beyond coding, I'm fascinated by AI, startups, and tech innovations. If I'm not coding or brainstorming ideas, you'll probably find me exploring new AI tools or learning about business strategies.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills">
+            <h2 data-aos="fade-right">My Expertise</h2>
+            <div class="card-container">
+                <div class="card" data-aos="zoom-in">
+                    <h3>🚀 AI-Assisted Development</h3>
+                    <p>Creating efficient and innovative software using cutting-edge AI tools</p>
+                </div>
+                <div class="card" data-aos="zoom-in" data-aos-delay="200">
+                    <h3>📈 Entrepreneurship</h3>
+                    <p>Co-founder of ShelfSwap (under development) - sustainable marketplace for students</p>
+                    <p>Previously launched Serenade (T-shirt brand) - successfully fulfilled 30+ orders</p>
+                </div>
+            </div>
+        </section>
+         
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 data-aos="fade-right">Projects</h2>
+        <div class="card-container">
+            <div class="card" data-aos="zoom-in">
+                <h3>ShelfSwap Marketplace</h3>
+                <p>Platform for buying/selling second-hand books with AI recommendations</p>
+                <div class="tech-tags">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">Mutler</span>
+                    <span class="tech-tag">AI</span>
+                </div>
+                <button class="project-btn" onclick="openModal('shelfswap')">Learn More</button>
+            </div>
+            <div class="card" data-aos="zoom-in" data-aos-delay="200">
+                <h3>School Fees Management</h3>
+                <p>MySQL-based tracking system for student fees management</p>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">MySQL</span>
+                    <span class="tech-tag">Tkinter</span>
+                </div>
+                <button class="project-btn" onclick="openModal('fees')">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Modals -->
+    <div id="shelfswap-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('shelfswap')">&times;</span>
+            <h3>ShelfSwap Marketplace</h3>
+            <div class="tech-tags">
+                <span class="tech-tag">HTML</span>
+                <span class="tech-tag">CSS</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">Express.js</span>
+                <span class="tech-tag">mutler</span>
+                <span class="tech-tag">AI</span>
+            </div>
+            <div class="project-screenshots">
+                <img src="sshp.png" alt="ShelfSwap Homepage">
+                <img src="ssbl.png" alt="ShelfSwap Book Listing">
+                <img src="ssad.png" alt="ShelfSwap Admin Dashboard">
+            </div>
+            <p>ShelfSwap is a sustainable marketplace where students can buy and sell used textbooks. The platform features:</p>
+            <ul>
+                <li>Automated pricing suggestions based on book condition and demand</li>
+                <li>Secure payment gateway integration</li>
+                <li>Real-time chat system for buyer-seller communication</li>
+                <li>Advanced search with filters for subjects, courses, and price ranges</li>
+            </ul>
+            <p>The project reduced textbook costs for students by 60% on average.</p>
+        </div>
+    </div>
+
+    <div id="fees-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('fees')">&times;</span>
+            <h3>School Fees Management System</h3>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">Tkinter</span>
+            </div>
+            <div class="project-screenshots">
+                <img src="fmd.png" alt="Dashboard">
+                <img src="fmsr.png" alt="Student Records">
+                <img src="fmpr.png" alt="Payment Reports">
+            </div>
+            <p>This comprehensive system helps schools manage student fee payments with features including:</p>
+            <ul>
+                <li>Automated reminder to parents to pay the fees on time through whatsapp</li>
+                <li>Late payment tracking with penalty calculations</li>
+                <li>Receipt generation and printing</li>
+                <li>Customizable reports for accounting</li>
+                <li>Data export to Excel for further analysis</li>
+            </ul>
+            <p>The system reduced administrative workload.</p>
+        </div>
+    </div>
+
+
+
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2 data-aos="fade-right">Let's Connect</h2>
+            <div class="card-container">
+                <div class="card" data-aos="zoom-in">
+                    <p>Email: <a href="mailto:adivaish2005@gmail.com" style="color: #64ffda;">adivaish2005@gmail.com</a></p>
+                    <p>LinkedIn: <a href="https://www.linkedin.com/in/adi-vaish-92b82b273/" style="color: #64ffda;" target="_blank">Adi Vaish</a></p>
+                    <a href="mailto:adivaish2005@gmail.com" class="cta-button">Get in Touch</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Particle Animation Fix
+        const canvas = document.querySelector('#particles');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // Set renderer size
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Particle system
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 5000;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.025,
+            color: '#64ffda',
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+         // Modal Functions
+         function openModal(projectId) {
+            document.getElementById(projectId + '-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(projectId) {
+            document.getElementById(projectId + '-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
